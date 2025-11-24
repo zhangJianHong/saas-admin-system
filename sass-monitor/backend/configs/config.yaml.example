@@ -1,0 +1,133 @@
+# Sass后台监控系统配置
+# 使用说明: 复制此文件为 config.yaml 并填入实际的配置值
+
+server:
+  port: 8080
+  mode: debug # debug, release
+  jwt_secret: "${JWT_SECRET}" # 请设置强密码
+  jwt_expire_hours: 24
+
+# 数据库配置
+databases:
+  # Sass监控数据库 (新建)
+  saas_monitor:
+    type: postgres
+    host: "${POSTGRES_HOST}"
+    port: 35432
+    user: "${POSTGRES_USER}"
+    password: "${POSTGRES_PASSWORD}"
+    database: "saas_monitor"
+    ssl_mode: "disable"
+    max_open_conns: 10
+    max_idle_conns: 5
+
+  # Light Admin业务数据库 (只读监控)
+  light_admin:
+    type: postgres
+    host: "${POSTGRES_HOST}"
+    port: 35432
+    user: "${POSTGRES_USER}"
+    password: "${POSTGRES_PASSWORD}"
+    database: "light_admin"
+    ssl_mode: "disable"
+    max_open_conns: 10
+    max_idle_conns: 5
+    readonly: true
+
+# ClickHouse配置
+clickhouse:
+  - name: "traces"
+    host: "${CLICKHOUSE_HOST}"
+    port: 39000
+    user: "default"
+    password: "${CLICKHOUSE_PASSWORD}"
+    database: "light_traces"
+
+  - name: "logs"
+    host: "${CLICKHOUSE_HOST}"
+    port: 39000
+    user: "default"
+    password: "${CLICKHOUSE_PASSWORD}"
+    database: "light_logs"
+
+  - name: "llm"
+    host: "${CLICKHOUSE_HOST}"
+    port: 39000
+    user: "default"
+    password: "${CLICKHOUSE_PASSWORD}"
+    database: "light_llm"
+
+  - name: "rum"
+    host: "${CLICKHOUSE_HOST}"
+    port: 39000
+    user: "default"
+    password: "${CLICKHOUSE_PASSWORD}"
+    database: "light_rum"
+
+# Redis配置
+redis:
+  host: "${REDIS_HOST}"
+  port: "36379"
+  password: "${REDIS_PASSWORD}"
+  database: 0
+  pool_size: 10
+
+# 监控配置
+monitoring:
+  # 数据采集间隔 (分钟)
+  collect_interval: 5
+  # 数据保留天数
+  retention_days: 30
+  # 告警配置
+  alerts:
+    enabled: true
+    cpu_threshold: 80
+    memory_threshold: 85
+    disk_threshold: 90
+    connection_threshold: 100
+
+# 日志配置
+logging:
+  level: info # debug, info, warn, error
+  format: json # json, text
+  output: stdout # stdout, file
+  file_path: ./logs/sass-monitor.log
+
+# 跨域配置
+cors:
+  allowed_origins:
+    - "http://localhost:3000"
+    - "http://localhost:3001"
+    - "http://localhost:3002"
+    - "http://localhost:3003"
+    - "http://127.0.0.1:3000"
+    - "http://127.0.0.1:3001"
+    - "http://127.0.0.1:3002"
+    - "http://127.0.0.1:3003"
+    - "http://0.0.0.0:3000"
+    - "http://0.0.0.0:3001"
+    - "http://0.0.0.0:3002"
+    - "http://0.0.0.0:3003"
+    - "http://192.168.1.13:3000"
+    - "http://192.168.1.13:3001"
+    - "http://192.168.1.13:3002"
+    - "http://192.168.1.13:3003"
+    - "http://192.168.2.81:3000"
+    - "http://192.168.2.81:3001"
+    - "http://192.168.2.81:3002"
+    - "http://192.168.2.81:3003"
+    - "http://81.71.139.23:8002"
+    - "http://81.71.139.23:8003"
+    - "http://81.71.139.23:8004"
+  allowed_methods:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "DELETE"
+    - "OPTIONS"
+  allowed_headers:
+    - "Origin"
+    - "Content-Type"
+    - "Accept"
+    - "Authorization"
+    - "X-Requested-With"

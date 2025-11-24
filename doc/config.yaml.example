@@ -1,0 +1,89 @@
+# SaaS Admin System 配置文件示例
+# 使用说明: 复制此文件为 config.yaml 并填入实际的配置值
+
+server:
+  port: 8087
+  license_expire_time: 24
+  enable_debug: true
+  enable_monitoring: true
+
+datasource:
+  clickhouse:
+    - name: traces
+      host: "${CLICKHOUSE_HOST}"
+      port: 39000
+      user: default
+      password: "${CLICKHOUSE_PASSWORD}"
+      database: light_traces
+      default: true
+
+    - name: logs
+      host: "${CLICKHOUSE_HOST}"
+      port: 39000
+      user: default
+      password: "${CLICKHOUSE_PASSWORD}"
+      database: light_logs
+
+    - name: llm
+      host: "${CLICKHOUSE_HOST}"
+      port: 39000
+      user: default
+      password: "${CLICKHOUSE_PASSWORD}"
+      database: light_llm
+
+    - name: rum
+      host: "${CLICKHOUSE_HOST}"
+      port: 39000
+      user: default
+      password: "${CLICKHOUSE_PASSWORD}"
+      database: light_rum
+
+  postgresql:
+    - name: light_admin
+      host: "${POSTGRES_HOST}"
+      port: 35432
+      user: "${POSTGRES_USER}"
+      password: "${POSTGRES_PASSWORD}"
+      database: light_admin
+      default: true
+
+    - name: llm
+      host: "${POSTGRES_HOST}"
+      port: 35432
+      user: "${POSTGRES_USER}"
+      password: "${POSTGRES_PASSWORD}"
+      database: llm
+
+  redis:
+    - name: default
+      host: "${REDIS_HOST}"
+      port: 36379
+      password: "${REDIS_PASSWORD}"
+      database: 0
+      default: true
+
+locale_config:
+  languages:
+    - zh-CN
+    - en
+  default_language: zh-CN
+  cache_enabled: true
+  cache_config:
+    level1_capacity: 100
+    level2_capacity: 5000
+  pool_config:
+    pool_size: 50
+    enable_warmup: true
+
+logs:
+  level: info
+  max_size: 100
+  max_backups: 10
+  max_age: 30
+  compress: true
+  log_name: default.log
+  log_path: ./logs
+  format: json
+
+stripe:
+  secret_key: "${STRIPE_SECRET_KEY}"

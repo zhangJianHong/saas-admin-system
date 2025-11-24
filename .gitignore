@@ -59,6 +59,7 @@ vendor/
 *.bak
 *.swp
 
-# Config with sensitive data (if needed, uncomment)
-# *.env
-# configs/config.yaml
+# Config with sensitive data
+*.env
+**/config.yaml
+!**/config.yaml.example
