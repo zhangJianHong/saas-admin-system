@@ -1,0 +1,71 @@
+{
+  "project_name": "saas-admin-system",
+  "scan_timestamp": "2025-11-19T19:03:19Z",
+  "scan_summary": {
+    "total_files": 2,
+    "scanned_files": 2,
+    "coverage_percentage": 100,
+    "truncated": false
+  },
+  "modules": [
+    {
+      "name": "config-management",
+      "path": "doc",
+      "type": "configuration",
+      "status": "complete",
+      "files": [
+        {
+          "path": "doc/config.yaml",
+          "type": "configuration",
+          "description": "系统全局配置文件，包含服务、数据源、国际化等配置"
+        },
+        {
+          "path": "doc/db.md",
+          "type": "documentation",
+          "description": "数据库文档文件，当前为空"
+        }
+      ]
+    }
+  ],
+  "tech_stack": {
+    "databases": ["clickhouse", "postgresql", "redis"],
+    "config_format": "yaml",
+    "payment": "stripe",
+    "i18n": ["zh-CN", "en"]
+  },
+  "missing_items": {
+    "source_code": "未发现任何编程语言源代码文件",
+    "dependency_files": "缺少依赖管理文件 (package.json, go.mod, etc.)",
+    "build_scripts": "缺少构建和部署脚本",
+    "test_files": "未发现测试文件或目录",
+    "documentation": "缺少项目README和API文档"
+  },
+  "next_steps": [
+    "确认这是否为配置专用仓库",
+    "查找源代码所在目录",
+    "补充数据库文档 (doc/db.md)",
+    "添加安全配置管理方案",
+    "创建项目构建和部署脚本"
+  ],
+  "ignore_patterns": [
+    "node_modules/**",
+    ".git/**",
+    ".github/**",
+    "dist/**",
+    "build/**",
+    ".next/**",
+    "__pycache__/**",
+    "*.lock",
+    "*.log",
+    "*.bin",
+    "*.pdf",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.mp4",
+    "*.zip",
+    "*.tar",
+    "*.gz"
+  ]
+}
