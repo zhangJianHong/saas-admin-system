@@ -25,6 +25,7 @@ import {
 } from '@ant-design/icons';
 import ThemeToggle from '../components/ThemeToggle';
 import MonitoringService from '../services/monitoring';
+import { AuthService } from '../services/auth';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -128,36 +129,22 @@ const Settings: React.FC = () => {
   const handlePasswordChange = async (values: any) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
 
-      const response = await fetch('/api/v1/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          old_password: values.old_password,
-          new_password: values.new_password,
-        }),
-      });
+      await AuthService.changePassword(values.old_password, values.new_password);
 
-      const data = await response.json();
+      message.success('密码修改成功,请重新登录');
+      passwordForm.resetFields();
 
-      if (response.ok) {
-        message.success('密码修改成功,请重新登录');
-        passwordForm.resetFields();
-        // 3秒后跳转到登录页
-        setTimeout(() => {
-          localStorage.removeItem('token');
-          window.location.href = '/login';
-        }, 3000);
-      } else {
-        message.error(data.error || '密码修改失败');
-      }
+      // 3秒后跳转到登录页
+      setTimeout(() => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user_info');
+        window.location.href = '/login';
+      }, 3000);
     } catch (error: any) {
       console.error('Password change error:', error);
-      message.error('密码修改失败');
+      message.error(error.response?.data?.error || '密码修改失败');
     } finally {
       setLoading(false);
     }

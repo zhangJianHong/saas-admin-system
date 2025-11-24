@@ -63,3 +63,4 @@ vendor/
 *.env
 **/config.yaml
 !**/config.yaml.example
+__debug_bin*

@@ -56,7 +56,11 @@ const Login: React.FC = () => {
           <Form
             name="login"
             className="login-form"
-            initialValues={{ remember: true }}
+            initialValues={{
+              username: 'admin',
+              password: 'admin123',
+              remember: true
+            }}
             onFinish={onFinish}
             size="large"
           >
@@ -67,7 +71,6 @@ const Login: React.FC = () => {
               <Input
                 prefix={<UserOutlined />}
                 placeholder="用户名"
-                defaultValue="admin"
               />
             </Form.Item>
 
@@ -78,7 +81,6 @@ const Login: React.FC = () => {
               <Input.Password
                 prefix={<LockOutlined />}
                 placeholder="密码"
-                defaultValue="admin123"
               />
             </Form.Item>
 

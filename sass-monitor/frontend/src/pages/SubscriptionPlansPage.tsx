@@ -10,6 +10,7 @@ import {
   Input,
   InputNumber,
   Switch,
+  Select,
   message,
   Popconfirm,
   Tag,
@@ -33,6 +34,14 @@ import { SubscriptionPlan, CreateSubscriptionPlanRequest, UpdateSubscriptionPlan
 import SubscriptionPlanService from '../services/subscriptionPlanService';
 
 const { Title, Text } = Typography;
+
+// 流量套餐类型枚举
+const FLOW_PACKAGE_OPTIONS = [
+  { label: '小型套餐 (50M)', value: 'small' },
+  { label: '专业套餐 (200M)', value: 'pro' },
+  { label: '大型套餐 (500M)', value: 'large' },
+  { label: '自定义套餐', value: 'custom' },
+];
 
 const SubscriptionPlansPage: React.FC = () => {
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
@@ -230,6 +239,26 @@ const SubscriptionPlansPage: React.FC = () => {
       ),
     },
     {
+      title: '默认流量套餐',
+      dataIndex: 'default_flow_package',
+      key: 'default_flow_package',
+      align: 'center' as const,
+      render: (value: string) => {
+        const packageInfo = FLOW_PACKAGE_OPTIONS.find(opt => opt.value === value);
+        const colorMap: Record<string, string> = {
+          small: 'blue',
+          pro: 'green',
+          large: 'orange',
+          custom: 'purple',
+        };
+        return (
+          <Tag color={colorMap[value] || 'default'}>
+            {packageInfo?.label || value || '-'}
+          </Tag>
+        );
+      },
+    },
+    {
       title: '状态',
       dataIndex: 'is_active',
       key: 'is_active',
@@ -270,6 +299,7 @@ const SubscriptionPlansPage: React.FC = () => {
                       <p><strong>月费:</strong> ¥{record.pricing_monthly.toFixed(2)}</p>
                       <p><strong>季费:</strong> ¥{record.pricing_quarterly.toFixed(2)}</p>
                       <p><strong>年费:</strong> ¥{record.pricing_yearly.toFixed(2)}</p>
+                      <p><strong>默认流量套餐:</strong> {FLOW_PACKAGE_OPTIONS.find(opt => opt.value === record.default_flow_package)?.label || record.default_flow_package || '-'}</p>
                       <p><strong>目标用户:</strong> {record.target_users || '-'}</p>
                       <p><strong>限制:</strong> {record.limits || '-'}</p>
                       <p><strong>功能:</strong> {record.features || '-'}</p>
@@ -411,6 +441,7 @@ const SubscriptionPlansPage: React.FC = () => {
             pricing_monthly: 0,
             pricing_quarterly: 0,
             pricing_yearly: 0,
+            default_flow_package: 'small',
             is_active: true,
             is_custom: false,
           }}
@@ -507,6 +538,17 @@ const SubscriptionPlansPage: React.FC = () => {
             name="upgrade_path"
           >
             <Input placeholder="请输入升级路径说明" />
+          </Form.Item>
+
+          <Form.Item
+            label="默认流量套餐"
+            name="default_flow_package"
+            rules={[{ required: true, message: '请选择默认流量套餐' }]}
+          >
+            <Select
+              placeholder="请选择流量套餐类型"
+              options={FLOW_PACKAGE_OPTIONS}
+            />
           </Form.Item>
 
           <Row gutter={16}>
@@ -650,6 +692,17 @@ const SubscriptionPlansPage: React.FC = () => {
             name="upgrade_path"
           >
             <Input placeholder="请输入升级路径说明" />
+          </Form.Item>
+
+          <Form.Item
+            label="默认流量套餐"
+            name="default_flow_package"
+            rules={[{ required: true, message: '请选择默认流量套餐' }]}
+          >
+            <Select
+              placeholder="请选择流量套餐类型"
+              options={FLOW_PACKAGE_OPTIONS}
+            />
           </Form.Item>
 
           <Row gutter={16}>
