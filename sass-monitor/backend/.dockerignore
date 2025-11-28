@@ -1,0 +1,38 @@
+# 日志文件
+*.log
+
+# 二进制文件
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+test_build
+__debug_bin*
+
+# 测试文件
+*_test.go
+test*.sh
+
+# IDE 配置
+.vscode/
+.idea/
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+*~
+
+# 文档
+*.md
+docs/
+
+# 配置文件（保留 config.yaml.example）
+configs/config.yaml
