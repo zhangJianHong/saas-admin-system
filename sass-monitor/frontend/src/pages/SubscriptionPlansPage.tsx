@@ -26,7 +26,6 @@ import {
   ReloadOutlined,
   EyeOutlined,
   DollarOutlined,
-  TeamOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from '@ant-design/icons';
@@ -171,9 +170,6 @@ const SubscriptionPlansPage: React.FC = () => {
 
   // 统计信息
   const activeCount = plans.filter(plan => plan.is_active).length;
-  const totalMonthlyRevenue = plans
-    .filter(plan => plan.is_active)
-    .reduce((sum, plan) => sum + plan.pricing_monthly, 0);
 
   const columns = [
     {
@@ -368,7 +364,7 @@ const SubscriptionPlansPage: React.FC = () => {
 
       {/* 统计卡片 */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
-        <Col xs={24} sm={8}>
+        <Col xs={24} sm={12}>
           <Card>
             <Statistic
               title="总计划数"
@@ -378,25 +374,13 @@ const SubscriptionPlansPage: React.FC = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={8}>
+        <Col xs={24} sm={12}>
           <Card>
             <Statistic
               title="活跃计划"
               value={activeCount}
               prefix={<CheckCircleOutlined />}
               valueStyle={{ color: '#52c41a' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={8}>
-          <Card>
-            <Statistic
-              title="月收入"
-              value={totalMonthlyRevenue}
-              prefix={<TeamOutlined />}
-              precision={2}
-              suffix="元"
-              valueStyle={{ color: '#fa8c16' }}
             />
           </Card>
         </Col>
