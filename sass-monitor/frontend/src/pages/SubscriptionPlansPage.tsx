@@ -293,8 +293,23 @@ const SubscriptionPlansPage: React.FC = () => {
                     <div>
                       <p><strong>计划名称:</strong> {record.tier_name}</p>
                       <p><strong>月费:</strong> ¥{record.pricing_monthly.toFixed(2)}</p>
+                      {record.stripe_price_id_monthly && (
+                        <p style={{ paddingLeft: 20, color: '#666' }}>
+                          <strong>Stripe 月度价格 ID:</strong> {record.stripe_price_id_monthly}
+                        </p>
+                      )}
                       <p><strong>季费:</strong> ¥{record.pricing_quarterly.toFixed(2)}</p>
+                      {record.stripe_price_id_quarterly && (
+                        <p style={{ paddingLeft: 20, color: '#666' }}>
+                          <strong>Stripe 季度价格 ID:</strong> {record.stripe_price_id_quarterly}
+                        </p>
+                      )}
                       <p><strong>年费:</strong> ¥{record.pricing_yearly.toFixed(2)}</p>
+                      {record.stripe_price_id_yearly && (
+                        <p style={{ paddingLeft: 20, color: '#666' }}>
+                          <strong>Stripe 年度价格 ID:</strong> {record.stripe_price_id_yearly}
+                        </p>
+                      )}
                       <p><strong>默认流量套餐:</strong> {FLOW_PACKAGE_OPTIONS.find(opt => opt.value === record.default_flow_package)?.label || record.default_flow_package || '-'}</p>
                       <p><strong>目标用户:</strong> {record.target_users || '-'}</p>
                       <p><strong>限制:</strong> {record.limits || '-'}</p>
@@ -496,6 +511,36 @@ const SubscriptionPlansPage: React.FC = () => {
             </Col>
           </Row>
 
+          <Row gutter={16}>
+            <Col span={8}>
+              <Form.Item
+                label="Stripe 月度价格 ID"
+                name="stripe_price_id_monthly"
+                tooltip="Stripe 月度订阅价格 ID，例如：price_xxxxx"
+              >
+                <Input placeholder="price_xxxxx" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="Stripe 季度价格 ID"
+                name="stripe_price_id_quarterly"
+                tooltip="Stripe 季度订阅价格 ID，例如：price_xxxxx"
+              >
+                <Input placeholder="price_xxxxx" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="Stripe 年度价格 ID"
+                name="stripe_price_id_yearly"
+                tooltip="Stripe 年度订阅价格 ID，例如：price_xxxxx"
+              >
+                <Input placeholder="price_xxxxx" />
+              </Form.Item>
+            </Col>
+          </Row>
+
           <Form.Item
             label="资源限制 (JSON)"
             name="limits"
@@ -646,6 +691,36 @@ const SubscriptionPlansPage: React.FC = () => {
                   prefix="¥"
                   placeholder="0.00"
                 />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={8}>
+              <Form.Item
+                label="Stripe 月度价格 ID"
+                name="stripe_price_id_monthly"
+                tooltip="Stripe 月度订阅价格 ID，例如：price_xxxxx"
+              >
+                <Input placeholder="price_xxxxx" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="Stripe 季度价格 ID"
+                name="stripe_price_id_quarterly"
+                tooltip="Stripe 季度订阅价格 ID，例如：price_xxxxx"
+              >
+                <Input placeholder="price_xxxxx" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="Stripe 年度价格 ID"
+                name="stripe_price_id_yearly"
+                tooltip="Stripe 年度订阅价格 ID，例如：price_xxxxx"
+              >
+                <Input placeholder="price_xxxxx" />
               </Form.Item>
             </Col>
           </Row>
