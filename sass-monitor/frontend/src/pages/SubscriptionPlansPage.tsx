@@ -367,7 +367,10 @@ const SubscriptionPlansPage: React.FC = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setIsCreateModalVisible(true)}
+            onClick={() => {
+              form.resetFields();
+              setIsCreateModalVisible(true);
+            }}
           >
             新增计划
           </Button>
