@@ -24,19 +24,19 @@ func NewOrganizationService(dbManager *database.DatabaseManager) *OrganizationSe
 
 // OrganizationDetail 组织详细信息结构
 type OrganizationDetail struct {
-	ID                string     `json:"id" gorm:"column:id"`
-	Name              string     `json:"name" gorm:"column:name"`
-	OwnerID           string     `json:"owner_id" gorm:"column:owner_id"`
-	Description       *string    `json:"description" gorm:"column:description"`
-	UserCount         int64      `json:"user_count" gorm:"column:user_count"`
-	ActiveUsers       int64      `json:"active_users" gorm:"column:active_users"`
-	SubscriptionCount int64      `json:"subscription_count" gorm:"column:subscription_count"`
-	WorkspaceCount    int64      `json:"workspace_count" gorm:"column:workspace_count"`
-	StorageUsage      float64    `json:"storage_usage" gorm:"column:storage_usage"`
+	ID                string  `json:"id" gorm:"column:id"`
+	Name              string  `json:"name" gorm:"column:name"`
+	OwnerID           string  `json:"owner_id" gorm:"column:owner_id"`
+	Description       *string `json:"description" gorm:"column:description"`
+	UserCount         int64   `json:"user_count" gorm:"column:user_count"`
+	ActiveUsers       int64   `json:"active_users" gorm:"column:active_users"`
+	SubscriptionCount int64   `json:"subscription_count" gorm:"column:subscription_count"`
+	WorkspaceCount    int64   `json:"workspace_count" gorm:"column:workspace_count"`
+	StorageUsage      float64 `json:"storage_usage" gorm:"column:storage_usage"`
 	// 订阅到期相关
-	SubscriptionStatus      string     `json:"subscription_status" gorm:"-"`    // active/expiring_soon/expired/none (计算字段)
-	SubscriptionEndDate     *time.Time `json:"subscription_end_date" gorm:"column:subscription_end_date"`  // 最近的订阅到期时间
-	DaysUntilExpiration     *int       `json:"days_until_expiration" gorm:"-"`  // 距离到期天数 (计算字段)
+	SubscriptionStatus      string     `json:"subscription_status" gorm:"-"`                                      // active/expiring_soon/expired/none (计算字段)
+	SubscriptionEndDate     *time.Time `json:"subscription_end_date" gorm:"column:subscription_end_date"`         // 最近的订阅到期时间
+	DaysUntilExpiration     *int       `json:"days_until_expiration" gorm:"-"`                                    // 距离到期天数 (计算字段)
 	ActiveSubscriptionCount int64      `json:"active_subscription_count" gorm:"column:active_subscription_count"` // 活跃订阅数
 	CreatedAt               time.Time  `json:"created_at" gorm:"column:created_at"`
 	UpdatedAt               *time.Time `json:"updated_at" gorm:"column:updated_at"`
@@ -66,22 +66,22 @@ type OrganizationWorkspace struct {
 
 // OrganizationSubscription 组织订阅信息
 type OrganizationSubscription struct {
-	ID               string     `json:"id"`
-	UserID           string     `json:"user_id"`
-	Username         string     `json:"username"`          // 订阅用户名
-	UserEmail        *string    `json:"user_email"`        // 订阅用户邮箱
-	PlanID           string     `json:"plan_id"`
-	PlanName         string     `json:"plan_name"`
-	PlanPricing      float64    `json:"plan_pricing"`      // 套餐价格
-	Status           string     `json:"status"`
-	BillingCycle     string     `json:"billing_cycle"`
-	StartDate        time.Time  `json:"start_date"`
-	EndDate          *time.Time `json:"end_date"`
-	DaysUntilExpiry  *int       `json:"days_until_expiry"` // 距离到期天数
-	PaymentMethod    *string    `json:"payment_method"`
-	LastBilledAt     *time.Time `json:"last_billed_at"`
-	TrialDaysUsed    *int       `json:"trial_days_used"`
-	CreatedAt        time.Time  `json:"created_at"`
+	ID              string     `json:"id"`
+	UserID          string     `json:"user_id"`
+	Username        string     `json:"username"`   // 订阅用户名
+	UserEmail       *string    `json:"user_email"` // 订阅用户邮箱
+	PlanID          string     `json:"plan_id"`
+	PlanName        string     `json:"plan_name"`
+	PlanPricing     float64    `json:"plan_pricing"` // 套餐价格
+	Status          string     `json:"status"`
+	BillingCycle    string     `json:"billing_cycle"`
+	StartDate       time.Time  `json:"start_date"`
+	EndDate         *time.Time `json:"end_date"`
+	DaysUntilExpiry *int       `json:"days_until_expiry"` // 距离到期天数
+	PaymentMethod   *string    `json:"payment_method"`
+	LastBilledAt    *time.Time `json:"last_billed_at"`
+	TrialDaysUsed   *int       `json:"trial_days_used"`
+	CreatedAt       time.Time  `json:"created_at"`
 }
 
 // WorkspaceUser 工作空间用户信息
@@ -119,7 +119,7 @@ func (s *OrganizationService) GetOrganizations(page, pageSize int, search string
 			MIN(CASE WHEN su.status IN ('active','trial') THEN su.end_date END) as subscription_end_date`).
 		Joins("LEFT JOIN auth_user_organization auo ON auth_organizations.id = auo.organization_id").
 		Joins("LEFT JOIN auth_workspaces aw ON auth_organizations.id = aw.organization_id").
-		Joins("LEFT JOIN subscription_users su ON su.organization_id = auth_organizations.id::text").
+		Joins("LEFT JOIN subscription_users su ON su.organization_id = auth_organizations.id").
 		Group("auth_organizations.id")
 	if search != "" {
 		query = query.Where("auth_organizations.name ILIKE ? OR auth_organizations.description ILIKE ?",
@@ -177,7 +177,7 @@ func (s *OrganizationService) GetOrganizationByID(orgID string) (*OrganizationDe
 			MIN(CASE WHEN su.status IN ('active','trial') THEN su.end_date END) as subscription_end_date`).
 		Joins("LEFT JOIN auth_user_organization auo ON auth_organizations.id = auo.organization_id").
 		Joins("LEFT JOIN auth_workspaces aw ON auth_organizations.id = aw.organization_id").
-		Joins("LEFT JOIN subscription_users su ON su.organization_id = auth_organizations.id::text").
+		Joins("LEFT JOIN subscription_users su ON su.organization_id = auth_organizations.id").
 		Where("auth_organizations.id = ?", orgID).
 		Group("auth_organizations.id").
 		First(&org).Error
